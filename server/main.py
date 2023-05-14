@@ -1,20 +1,21 @@
+# server_a.py
+import httpx
 from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
-from routers.today_patients import router as today_patients
+import uvicorn
 
-#서버실행 명령어 : uvicorn main:app --reload
 app = FastAPI()
 
-origins = [
-    'http://localhost:3000'
-]
+@app.get("/request_to_b")
+async def request_to_b():
+    async with httpx.AsyncClient() as client:
+        response = await client.get("http://172.30.1.95:8010/response")
+    return response.json()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
- 
-app.include_router(today_patients)
+@app.get("/request_table_count")
+async def request_table_count():
+    async with httpx.AsyncClient() as client:
+        response = await client.get("http://172.30.1.95:8010/get_table_count")
+    return response.json()
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
