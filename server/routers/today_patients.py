@@ -2,20 +2,32 @@ from fastapi import APIRouter
 from sqlalchemy import create_engine, text
 import openai 
 import os
+
 #db 한글 깨질때 : .encode('ISO-8859-1').decode('cp949')
 
 #openai key
 openai.api_key = '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'
 
 # DB 연결 설정
+# login_dta = {
+#     'server': '121.130.224.129',
+#     'port': '1433',
+#     'database': 'efMain',
+#     'username': 'senghon',
+#     'password': 'yy5625'
+# }
+
 login_dta = {
-    'server': '121.130.224.129',
-    'port': '1433',
+    'server': '172.30.1.104',
+    'port': '8010',
     'database': 'efMain',
     'username': 'senghon',
     'password': 'yy5625'
 }
-engine = create_engine(f"mssql+pymssql://{login_dta['username']}:{login_dta['password']}@{login_dta['server']}:{login_dta['port']}/{login_dta['database']}")
+
+connection_string = f"mssql+pyodbc://{login_dta['username']}:{login_dta['password']}@{login_dta['server']}:{login_dta['port']}/{login_dta['database']}?driver=ODBC+Driver+18+for+SQL+Server&Encrypt=no&TrustServerCertificate=yes"
+
+engine = create_engine(connection_string)
 
 router = APIRouter (prefix='/api/today_patients')
 
