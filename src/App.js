@@ -41,7 +41,6 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-     
                   {Todaypatient.map(function (patient) {
                     return (
                       <tr>

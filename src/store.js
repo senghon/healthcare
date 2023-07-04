@@ -12,7 +12,7 @@ import axios from "axios";
 const fetchTodaypatient = createAsyncThunk(
     "todaypatient가져온다",
     async()=>{
-        let response = await axios.get('http://127.0.0.1:8000/api/today_patients').then((a)=>{return a.data})
+        let response = await axios.get('http://127.0.0.1:8000/request_today_patient/20230527').then((a)=>{return a.data})
         return response
     }
 )

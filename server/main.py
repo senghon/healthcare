@@ -1,21 +1,23 @@
 # server_a.py
 import httpx
 from fastapi import FastAPI
-import uvicorn
 
 app = FastAPI()
 
-@app.get("/request_to_b")
-async def request_to_b():
+
+# main 접속시 오늘의 환자 목록 loading
+@app.get("/request_today_patient/{date}")
+async def request_to_b(date):
     async with httpx.AsyncClient() as client:
-        response = await client.get("http://172.30.1.95:8010/response")
+        response = await client.get(f"http://172.30.1.104:8011/today_patients_list/{date}")
     return response.json()
 
-@app.get("/request_table_count")
-async def request_table_count():
-    async with httpx.AsyncClient() as client:
-        response = await client.get("http://172.30.1.95:8010/get_table_count")
+# 환자 클릭시 오늘의 개별 환자 정보 get
+@app.get('/{patient_id}/{vsid}')
+async def request_patient_information(patient_id,vsid):
+    async with httpx.AsyncClient(timeout=20.0) as client :
+        response = await client.get(f"http://172.30.1.104:8011/{patient_id}/{vsid}")
     return response.json()
+# 이전 검사 환자 목록 loading
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+
