@@ -1,96 +1,100 @@
-import { Container, Row, Col, Table, Badge, ListGroup } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { Container, Row, Col, Table } from 'react-bootstrap';
 import Navigation from './Components/Navigation';
 import './App.css';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTodaypatient } from './store.js';
-import { Link, Route } from 'react-router-dom';
+import { getTodaypatient } from './store';
+import { Route,Routes,Link,useNavigate,Outlet } from 'react-router-dom';
 
-function App() {
-  const dispatch = useDispatch()
-  let Todaypatient = useSelector((state) => state.Todaypatient)
-  // let todaypatient = useQuery(['result'], () =>
-  //   axios.get('http://127.0.0.1:8000/api/today_patients')
-  //   .then((a)=>{
-  //     return a.data
-  //   }))
-  // let result
-  // let Todaypatient
+const TodayPatientTable = () => {
+  const todayPatient = useSelector((state) => state.Todaypatient.user);
+  let navigate = useNavigate()
 
-  //오늘의 환자 data를 불러오는 Mount 트리거(새로고침).
+  if (!todayPatient) {
+    return <p>Loading...</p>; // 데이터 로딩 중일 때 로딩 표시를 보여줍니다.
+  }
+
+  return (
+    <Table striped bordered hover className='patient-table'>
+      <thead>
+        <tr>
+          <th>이름</th>
+          <th>정보</th>
+        </tr>
+      </thead>
+      <tbody>
+        {todayPatient.map((patient) => (
+          <tr key={patient.ptid} onClick={()=>{navigate(`${patient.ptid}/${patient.vsid}`)}}>
+            <td>{patient.ptname}</td>
+            <td>
+              <p><strong>일자:</strong> {patient.hplrdt}</p>
+              <p><strong>성별:</strong> {patient.ptsxid}</p>
+              <p><strong>품종:</strong> {patient.ptbrid}</p>
+              <p><strong>보호자:</strong> {patient.ptclid}</p>
+              <p><strong>담당 수의사:</strong> {patient.emname}</p>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+};
+
+const PastRecordsTable = () => {
+  return (
+    <Table striped bordered hover className='past-records-table'>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>이름</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mark</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Jacob</td>
+        </tr>
+        <tr>
+          <td>3</td>
+        </tr>
+      </tbody>
+    </Table>
+  );
+};
+
+const App = () => {
+  const dispatch = useDispatch();
+  const todayPatient = useSelector((state) => state.Todaypatient.user);
+
   useEffect(() => {
-    dispatch(fetchTodaypatient())
-  }, [dispatch])
+    dispatch(getTodaypatient()); // getTodaypatient thunk를 dispatch하여 데이터를 가져온다.
+  }, []);
 
   return (
     <div className="App">
       <Navigation />
       <Container>
         <Row>
-          <Col>
-            <div className='todaytitle'>
-              <p>Today</p>
+          <Col md={6}>
+            <div className='section-title'>
+              <p>오늘의 환자</p>
             </div>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>이름</th>
-                  <th>info</th>
-                </tr>
-              </thead>
-              <tbody>
-                  {Todaypatient.map(function (patient) {
-                    return (
-                      <tr>
-                        <td>{patient.ptname}</td>
-                        <td>{patient.ptid}</td>
-                        <td>
-                          <p>일자 : {patient.hplrdt}</p>
-                          <p>성별 : {patient.ptsxid}</p>
-                          <p>품종 : {patient.ptbrid[0]}</p>
-                          <p>보호자 : {patient.ptclid}</p>
-                          <p>담당 수의사 :{patient.emname}</p>
-                        </td>
-                      </tr>
-                    )
-                  }
-                  )
-                  }
-                
-              </tbody>
-          </Table>
-        </Col>
-        <Col>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>First Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-              </tr>
-              <tr>
-                <td>3</td>
-              </tr>
-            </tbody>
-          </Table>
-        </Col>
-      </Row>
-    </Container>
-    </div >
+            <TodayPatientTable />
+          </Col>
+          <Col md={6}>
+            <div className='section-title'>
+              <p>지난 기록</p>
+            </div>
+            <PastRecordsTable />
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
-}
-
-
+};
 
 export default App;

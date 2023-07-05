@@ -1,3 +1,21 @@
-.todaytitle{
-    margin: 100px;
-}
+.patient-table {
+    width: 100%;
+  }
+  
+  .patient-table th,
+  .patient-table td {
+    font-size: 14px;
+    padding: 8px;
+  }
+  
+  .past-records-table {
+    width: 100%;
+  }
+  
+  .past-records-table th,
+  .past-records-table td {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  
