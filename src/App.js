@@ -15,7 +15,8 @@ const TodayPatientTable = () => {
   }
 
   return (
-    <Table striped bordered hover className='patient-table'>
+    <div className='todaypatient'>
+    <table> className='patient-table'
       <thead>
         <tr>
           <th>이름</th>
@@ -36,33 +37,39 @@ const TodayPatientTable = () => {
           </tr>
         ))}
       </tbody>
-    </Table>
+    </table>
+    </div>
   );
 };
 
 const PastRecordsTable = () => {
   return (
-    <Table striped bordered hover className='past-records-table'>
+    <div className='pastrecords'>
+    <table className='past-records-table'>
       <thead>
         <tr>
-          <th>#</th>
+          <th>일자</th>
           <th>이름</th>
+          <th>정보</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>1</td>
           <td>Mark</td>
+          <td>sasdf</td>
         </tr>
         <tr>
           <td>2</td>
           <td>Jacob</td>
+          <td>asdf</td>
         </tr>
         <tr>
           <td>3</td>
         </tr>
       </tbody>
-    </Table>
+    </table>
+    </div>
   );
 };
 
@@ -76,8 +83,11 @@ const App = () => {
 
   return (
     <div className="App">
-      <Navigation />
-      <Container>
+      <div className='navigationbar'> 
+      <Navigation  />
+      </div>
+      <div>
+      <Container className='containerbox'>
         <Row>
           <Col md={6}>
             <div className='section-title'>
@@ -93,6 +103,7 @@ const App = () => {
           </Col>
         </Row>
       </Container>
+      </div>
     </div>
   );
 };
