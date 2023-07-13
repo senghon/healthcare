@@ -19,7 +19,7 @@ const TodayPatientTable = () => {
     <table> className='patient-table'
       <thead>
         <tr>
-          <th>이름</th>
+          <th>이름d</th>
           <th>정보</th>
         </tr>
       </thead>
