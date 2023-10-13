@@ -20,13 +20,15 @@ const TodayPatientTable = () => {
     <table>
       <thead>
         <tr>
+          <th></th>
           <th>이름</th>
           <th>정보</th>
         </tr>
       </thead>
       <tbody>
         {todayPatient.map((patient) => (
-          <tr >
+          <tr>
+            <td>검사완료</td>
             <td><p onClick={()=>{navigate(`/patient/${patient.ptid}/${patient.vsid}`)}}>{patient.ptname}</p></td>
             <td>
               <p><strong>일자:</strong> {patient.hplrdt}</p>
@@ -105,6 +107,28 @@ const Selectpatient = () => {
   );
 };
 
+const Main = () => {
+  return (
+    <div>
+    <Container className='containerbox'>
+      <Row>
+        <Col md={6}>
+          <div className='section-title'>
+            <p>오늘의 환자</p>
+          </div>
+          <TodayPatientTable />
+        </Col>
+        <Col md={6}>
+          <div className='section-title'>
+            <p>지난 기록</p>
+          </div>
+          <PastRecordsTable />
+        </Col>
+      </Row>
+    </Container>
+    </div>
+  )
+}
 
 const App = () => {
   const dispatch = useDispatch();
@@ -121,26 +145,7 @@ const App = () => {
       <Navigation  />
       </div>
       <Routes>
-        <Route path = '/' element={
-          <div>
-          <Container className='containerbox'>
-            <Row>
-              <Col md={6}>
-                <div className='section-title'>
-                  <p>오늘의 환자</p>
-                </div>
-                <TodayPatientTable />
-              </Col>
-              <Col md={6}>
-                <div className='section-title'>
-                  <p>지난 기록</p>
-                </div>
-                <PastRecordsTable />
-              </Col>
-            </Row>
-          </Container>
-          </div>
-        }></Route>
+        <Route path = '/' element={<Main />}></Route>
         <Route path = '/patient/:patient_id/:vsid' element={<Selectpatient />} ></Route>
       </Routes>
     </div>
