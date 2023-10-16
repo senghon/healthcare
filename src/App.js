@@ -19,23 +19,21 @@ const TodayPatientTable = () => {
     <div className='todaypatient'>
     <table>
       <thead>
-        <tr>
-          <th></th>
-          <th>이름</th>
-          <th>정보</th>
-        </tr>
       </thead>
       <tbody>
         {todayPatient.map((patient) => (
-          <tr>
-            <td>검사완료</td>
-            <td><p onClick={()=>{navigate(`/patient/${patient.ptid}/${patient.vsid}`)}}>{patient.ptname}</p></td>
+          <tr onClick={()=>{navigate(`/patient/${patient.ptid}/${patient.vsid}`)}} className='todaypatient_box'>
             <td>
-              <p><strong>일자:</strong> {patient.hplrdt}</p>
+              <div className='test-box'><p>검사중</p></div>
+            </td> 
+            <td>
+              <div className='todaypatient_patientinfo'>
+              <p><strong>{patient.ptname}{patient.hplrdt}{patient.ptid}</strong></p>
               <p><strong>성별:</strong> {patient.ptsxid}</p>
               <p><strong>품종:</strong> {patient.ptbrid}</p>
               <p><strong>보호자:</strong> {patient.ptclid}</p>
               <p><strong>담당 수의사:</strong> {patient.emname}</p>
+              </div>
             </td>
           </tr>
         ))}
@@ -120,7 +118,7 @@ const Main = () => {
         </Col>
         <Col md={6}>
           <div className='section-title'>
-            <p>지난 기록</p>
+            <p>지난 기록 + 검색창</p>
           </div>
           <PastRecordsTable />
         </Col>

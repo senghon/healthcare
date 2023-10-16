@@ -36,3 +36,15 @@
   }
 
   
+  .todaypatient_box{
+    border: solid;
+}
+
+  .test-box{
+    margin-left: 40px;
+    border: solid;
+  }
+  
+  .todaypatient_patientinfo{
+    margin : 50px;
+  }
