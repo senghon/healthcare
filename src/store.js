@@ -3,13 +3,15 @@ import { useQuery } from "react-query";
 import axios from "axios";
 
 
+
+// 추천 더미 20201006
 //오늘의 환자 목록 로딩
 export const getTodaypatient = createAsyncThunk(
   "get/todaypatient",
   async (date) => {
-    date = 20210219
+    date = 20221006
     let res = await axios.get(`http://localhost:8000/request_today_patient/${date}`).then(a => a.data);
-    console.log('오늘의 환자')
+    console.log('오늘의 환자-server')
     return res;
   }
 );
@@ -18,6 +20,7 @@ export const getTodaypatient = createAsyncThunk(
 export const getPatientinfo = createAsyncThunk(
     'get/patientinfo',
     async ({patient_id,vsid})=> {
+        console.log('개별환자 서버 접근')
         let res = await axios.get(`http://localhost:8000/patient/${patient_id}/${vsid}`).then(a=>a.data);
         console.log('개별환자')
         return res;
@@ -43,7 +46,10 @@ const TodaypatientSlice = createSlice({
 //각 환자 정보 슬라이스
 const SelectpatientSlice = createSlice({
   name: "Selectpatient",
-  initialState: {},
+  initialState: {
+    laoding: "idle",
+    user:null
+  },
   extraReducers: (builder) => {
     builder.addCase(getPatientinfo.pending, (state) => {
       state.loading = "pending";
